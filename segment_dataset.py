@@ -16,6 +16,7 @@ if __name__ == '__main__':
     
     
     filename = 'G4-vertical'
+    sr = 44100 # sampling rate
     plot = True
     
     for filename in filenames:
@@ -28,7 +29,6 @@ if __name__ == '__main__':
             os.mkdir(save_path)
 
         # load sound
-        sr = 44100 # sampling rate
         file = f'data/{filename}-sound.wav'
         signal, sr = librosa.load(file, sr=sr, mono=False)
         print(signal.shape)
