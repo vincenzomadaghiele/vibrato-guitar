@@ -11,7 +11,7 @@ ms.use("seaborn-v0_8")
 
 if __name__ == '__main__': 
     
-    sample_name = 'G4-circular'
+    sample_name = 'G3-circular'
     filepath = f'data-processed/{sample_name}/{sample_name}-sound-2.wav'
     sr = 44100 # sampling rate
     signal, sr = librosa.load(filepath, sr=sr, mono=False)
@@ -93,7 +93,7 @@ if __name__ == '__main__':
     
     # filtering harmonics and extracting pitch and amplitude envelopes
     
-    N_harmonics = 4
+    N_harmonics = 6
     # cut signal
     signal_harmonic = signal[samples_indexes[0]:samples_indexes[300]]
     filter_width = 50
@@ -101,8 +101,6 @@ if __name__ == '__main__':
     lowcut = central_harmonics[1] - filter_width # filtering out background noise
     highcut = central_harmonics[N_harmonics-1] + filter_width
     
-    
-    # Plot the frequency response for a few different orders.
     signal = signal[~np.isnan(signal)]
     signal = signal[signal != -np.inf]
     y = butter_bandpass_filter(signal, lowcut, highcut, sr, order=6) # filtered signal
@@ -121,11 +119,9 @@ if __name__ == '__main__':
     ax[0].grid(True)
     ax[0].legend(loc='best')
     S = np.abs(librosa.stft(signal)) # spectrum
-    librosa.display.specshow(librosa.amplitude_to_db(S, ref=np.max),
-                             x_axis='time', y_axis='log', ax=ax[1])
-    S = np.abs(librosa.stft(y)) # spectrum
-    librosa.display.specshow(librosa.amplitude_to_db(S, ref=np.max),
-                             x_axis='time', y_axis='log', ax=ax[2])
+    librosa.display.specshow(librosa.amplitude_to_db(S, ref=np.max), x_axis='time', y_axis='log', ax=ax[1])
+    #S = np.abs(librosa.stft(y)) # spectrum
+    librosa.display.specshow(librosa.amplitude_to_db(S, ref=np.max), x_axis='time', y_axis='log', ax=ax[2])
     ax[3].plot(signal, label='Original signal')
     ax[3].plot(y)
     
